@@ -1,26 +1,7 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      initialRoute: '/',
-      debugShowCheckedModeBanner: false,
-      routes: {
-        '/': (context) => const CalculatorView(),
-      },
-    );
-  }
-}
-
 class CalculatorView extends StatefulWidget {
-  const CalculatorView({Key? key}) : super(key: key);
+  const CalculatorView({super.key});
 
   @override
   State<CalculatorView> createState() => _CalculatorViewState();
@@ -117,61 +98,64 @@ class _CalculatorViewState extends State<CalculatorView> {
       '='
     ];
 
-    return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        title: const Text('Calculator'),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Prabin Calculator'),
+          backgroundColor: Colors.blue,
+          centerTitle: true,
+        ),
         backgroundColor: Colors.black,
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            flex: 2,
-            child: Container(
-              alignment: Alignment.bottomRight,
-              padding: const EdgeInsets.all(20),
-              child: Text(
-                displayText,
-                style: const TextStyle(
-                  fontSize: 48,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
+        body: Column(
+          children: [
+            Expanded(
+              flex: 2,
+              child: Container(
+                alignment: Alignment.bottomRight,
+                padding: const EdgeInsets.all(20),
+                child: Text(
+                  displayText,
+                  style: const TextStyle(
+                    fontSize: 48,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
-          ),
-          Expanded(
-            flex: 5,
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
+            Expanded(
+              flex: 5,
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4,
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
+                ),
+                padding: const EdgeInsets.all(8),
+                itemCount: buttonLabels.length,
+                itemBuilder: (context, index) {
+                  final label = buttonLabels[index];
+                  return ElevatedButton(
+                    onPressed: () => onButtonPressed(label),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: _getButtonColor(label),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: Text(
+                      label,
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: label == '=' ? Colors.white : Colors.black,
+                      ),
+                    ),
+                  );
+                },
               ),
-              padding: const EdgeInsets.all(8),
-              itemCount: buttonLabels.length,
-              itemBuilder: (context, index) {
-                final label = buttonLabels[index];
-                return ElevatedButton(
-                  onPressed: () => onButtonPressed(label),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: _getButtonColor(label),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: Text(
-                    label,
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: label == '=' ? Colors.white : Colors.black,
-                    ),
-                  ),
-                );
-              },
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
